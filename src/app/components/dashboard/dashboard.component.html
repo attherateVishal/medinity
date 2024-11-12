@@ -1,0 +1,288 @@
+<app-navbar></app-navbar>
+<div [ngClass]="(listShow)?'banner2':'banner'">
+  <div class="container">
+    <div [ngClass]="(listShow)?'banner-text2':'banner-text'">
+      <form [formGroup]="searchDocForm" (ngSubmit)="onSubmit()">
+        <div class="wrap-loginDemo">
+          <div class="input-group  row">
+            <div class="col-md-4 input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+              <input type="text" placeholder="City" (click)="valueSelect()" aria-label="Number" matInput formControlName="city" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let coption of cities" [value]="coption">
+                  {{coption}}
+                </mat-option>
+              </mat-autocomplete>
+              <span class="focus-input100"></span>
+              <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                <div *ngIf="f.city.errors.required">Name is required</div>
+                <div *ngIf="f.city.errors.pattern">Name can only be alphabets</div>
+                <div *ngIf="searchDocForm.controls['city'].hasError('maxlength')">Name must be less then
+                  80
+                  characters
+                </div>
+              </div>
+            </div>
+            <div class="input-group-prepend col-md-4">
+              <span class="input-group-text"><i class="fa fa-location-arrow" aria-hidden="true"></i>
+              </span>
+              <input type="text" placeholder="Sub Area" (click)="valueSelect()" aria-label="Number" matInput formControlName="subArea" [matAutocomplete]="auto1" [ngClass]="{ 'is-invalid': submitted && f.subArea.errors }">
+              <mat-autocomplete #auto1="matAutocomplete">
+                <mat-option *ngFor="let saoption of subAreas" [value]="saoption">
+                  {{saoption}}
+                </mat-option>
+              </mat-autocomplete>
+              <span class="focus-input100"></span>
+              <div *ngIf="submitted && f.subArea.errors" class="invalid-feedback">
+                <div *ngIf="f.subArea.errors.required">subarea is required</div>
+                <div *ngIf="f.subArea.errors.pattern">subarea can only be alphabets</div>
+                <div *ngIf="searchDocForm.controls['subArea'].hasError('maxlength')">subarea must be
+                  less then 80
+                  characters
+                </div>
+              </div>
+            </div>
+            <div class="input-group-prepend col-md-4">
+              <span class="input-group-text"><i class="fa fa-user-md" aria-hidden="true"></i>
+              </span>
+              <input type="text" placeholder="Speciality" (click)="valueSelect()" aria-label="Number" matInput formControlName="speciality" [matAutocomplete]="auto2" [ngClass]="{ 'is-invalid': submitted && f.speciality.errors }">
+              <mat-autocomplete #auto2="matAutocomplete">
+                <mat-option *ngFor="let soption of specialities" [value]="soption">
+                  {{soption}}
+                </mat-option>
+              </mat-autocomplete>
+              <span class="focus-input100"></span>
+              <div *ngIf="submitted && f.speciality.errors" class="invalid-feedback">
+                <div *ngIf="f.speciality.errors.required">speciality is required</div>
+                <div *ngIf="f.speciality.errors.pattern">speciality can only be alphabets</div>
+                <div *ngIf="searchDocForm.controls['speciality'].hasError('maxlength')">speciality must
+                  be less then 80
+                  characters
+                </div>
+              </div>
+            </div>
+          
+        </div>
+    </div>
+    <a><button class="btn btn-warning text-white btn-banner" style="margin-top: 2%;">Submit</button></a>
+    </form>
+  </div>
+</div>
+</div>
+<!--for mobile devices-->
+<section *ngIf="!smallDevice" style="background-color: rgb(200, 200, 243);">
+  <div *ngIf="datafound" class="container" style="color: black !important;">
+    <mat-tab-group animationDuration="0ms" style="color: black !important;">
+      <mat-tab label="Private">
+        <div class="custom-width row">
+          <div class="col-md-6 col-lg-6">
+            <div *ngFor="let searchData of privateList">
+              <div *ngIf="searchData['Private_Or_Public']!=''">
+                <div class="doc-prof  row" *ngIf="searchData['Private_Or_Public']=='Private'">
+                  <div class="col-sm-4 col-md-4 col-lg-4">
+                    <img *ngIf="searchData.View_Picture_permission=='yes'" [src]="searchData.picture_url" alt="" class="img-rounded img-fluid" style="width: 70%;margin-top: 3%;" />
+                    <img *ngIf="searchData.View_Picture_permission=='no'" src="./assets/images/no-photo-1.png" alt="" class="img-rounded img-fluid" style="width: 70%;margin-top: 3%;" />
+                  </div>
+                  <div class="col-sm-8 col-md-8 col-lg-8">
+                    <h4>{{searchData.Name}}</h4>
+                    <small><cite title="San Diego, USA">{{searchData.Sub_Area}}, {{searchData.City}}
+                        <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                    <div>
+                      {{searchData.Decipline}}
+                    </div>
+                    <ul>
+                      <li>{{searchData.Speciality}}</li>
+                      <li>{{searchData.Subspecility}}</li>
+                      <li style="text-align: center;padding-top: 5px;">
+                        <ul class="row">
+                          <li class="col-xs-6 col-md-6"><a class="btn btn-small btn-success" style="font-size:12px;" [href]="'http://maps.google.com?q='+searchData.Address" target="_blank">Get Direction</a></li>
+                          <li class="col-xs-6 col-md-6"><a class="btn btn-small btn-success" style="font-size:12px;" [href]="'tel:+'+searchData.Telephone_number">Call Now</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="privateList.length==0">
+              <p style="text-align: center;">Private not available </p>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Public">
+        <div class="custom-width row">
+          <div class="col-md-6 col-lg-6">
+            <div *ngFor="let searchData of publicList">
+              <div *ngIf="searchData['Private_Or_Public']!=''">
+                <div class=" doc-prof  row" *ngIf="searchData['Private_Or_Public']=='Public'">
+                  <div class="col-sm-4 col-md-4 col-lg-4">
+                    <img *ngIf="searchData.View_Picture_permission=='yes'" [src]="searchData.picture_url" alt="" class="img-rounded img-fluid" style="width: 70%;margin-top: 3%;" />
+                    <img *ngIf="searchData.View_Picture_permission=='no'" src="./assets/images/no-photo-1.png" alt="" class="img-rounded img-fluid" style="width: 70%;margin-top: 3%;" />
+                  </div>
+                  <div class="col-sm-8 col-md-8 col-lg-8">
+                    <h4>{{searchData.Name}}</h4>
+                    <small><cite [title]="searchData.City">{{searchData.Sub_Area}},
+                        {{searchData.City}} <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                    <div>
+                      {{searchData.Decipline}}
+                    </div>
+                    <ul>
+                      <li>{{searchData.Speciality}}</li>
+                      <li>{{searchData.Subspecility}}</li>
+                      <li style="text-align: center;padding-top: 5px;">
+                        <ul class="row">
+                          <li class="col-xs-6 col-md-6"><a class="btn btn-small btn-success" style="font-size:12px;" [href]="'http://maps.google.com?q='+searchData.Address" target="_blank">Get Direction</a></li>
+                          <li class="col-xs-6 col-md-6"><a class="btn btn-small btn-success" style="font-size:12px;" [href]="'tel:+'+searchData.Telephone_number">Call Now</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="publicList.length==0">
+              <p style="text-align: center;">Public not available </p>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <div style="text-align: -webkit-center;">
+      <i (click)="previousFnc(pageNo)" class="material-icons" *ngIf="1!=pageNo" style="cursor: pointer;"> navigate_before</i>
+      <i class="material-icons" *ngIf="1==pageNo" style="color: darkgray;cursor: pointer;"> navigate_before</i>
+      <span style="vertical-align: top;">{{pageNo}} out of {{totalPage}}</span>
+      <i (click)="nextFnc(pageNo)" class="material-icons" *ngIf="totalPage!=pageNo" style="cursor: pointer;"> navigate_next </i>
+      <i class="material-icons" *ngIf="totalPage==pageNo" style="color: darkgray;cursor: pointer;"> navigate_next </i>
+    </div>
+  </div>
+</section>
+<!--for desktop devices-->
+<section *ngIf="smallDevice" style="background-color: rgb(200, 200, 243);">
+  <div *ngIf="datafound" class="container" style="color: black !important;">
+    <div class="custom-width row">
+      <div class="col-md-6 col-lg-6">
+        <h4 style="text-align: center;background:rgba(92, 116, 230, 0.2);border-radius: 10px;">Private</h4>
+        <div *ngFor="let searchData of privateList">
+          <div *ngIf="searchData['Private_Or_Public']!=''">
+            <div class="doc-prof   row" *ngIf="searchData['Private_Or_Public']=='Private'">
+              <div class="col-sm-4 col-md-4 col-lg-4">
+                <img *ngIf="searchData.View_Picture_permission=='yes'" [src]="searchData.picture_url" alt="" class="img-rounded img-fluid" style="width: 70%;margin-top: 3%;" />
+                <img *ngIf="searchData.View_Picture_permission=='no'" src="./assets/images/no-photo-1.png" alt="" class="img-rounded img-fluid" style="width: 70%;margin-top: 3%;" />
+              </div>
+              <div class="col-sm-8 col-md-8 col-lg-8">
+                <h4>{{searchData.Name}}</h4>
+                <small><cite [title]="searchData.City">{{searchData.Sub_Area}}, {{searchData.City}} <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                <div>
+                  {{searchData.Decipline}}
+                </div>
+                <ul>
+                  <li>{{searchData.Speciality}}</li>
+                  <li>{{searchData.Subspecility}}</li>
+                  <li style="text-align: center;padding-top: 5px;">
+                    <ul class="row">
+                      <li class="col-md-6"><a class="btn btn-small btn-success" style="font-size:12px;" [href]="'http://maps.google.com?q='+searchData.Address" target="_blank">Get Direction</a></li>
+                      <li class="col-md-6"><a class="btn btn-small btn-success" style="font-size:12px;" [href]="'tel:+'+searchData.Telephone_number">Call Now</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="privateList.length==0">
+          <p class="hsptl-data-not-avail">Private not available </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6">
+        <h4 style="text-align: center;background:rgba(92, 116, 230, 0.2);border-radius: 10px;">Public</h4>
+        <div *ngFor="let searchData of publicList">
+          <div *ngIf="searchData['Private_Or_Public']!=''">
+            <div class=" doc-prof   row" *ngIf="searchData['Private_Or_Public']=='Public'">
+              <div class="col-sm-4 col-md-4 col-lg-4">
+                <img *ngIf="searchData.View_Picture_permission=='yes'" [src]="searchData.picture_url" alt="" class="img-rounded img-fluid" style="width: 70%;margin-top: 3%;" />
+                <img *ngIf="searchData.View_Picture_permission=='no'" src="./assets/images/no-photo-1.png" alt="" class="img-rounded img-fluid" style="width: 70%;margin-top: 3%;" />
+              </div>
+              <div class="col-sm-8 col-md-8 col-lg-8">
+                <h4>{{searchData.Name}}</h4>
+                <small><cite [title]="searchData.City">{{searchData.Sub_Area}}, {{searchData.City}} <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                <div>
+                  {{searchData.Decipline}}
+                </div>
+                <ul>
+                  <li>{{searchData.Speciality}}</li>
+                  <li>{{searchData.Subspecility}}</li>
+                  <!-- <li>Skin Rejuvenation</li> -->
+                  <li style="text-align: center;padding-top: 5px;">
+                    <ul class="row">
+                      <li class="col-md-6"><a class="btn btn-small btn-success" style="font-size:12px;" [href]="'http://maps.google.com?q='+searchData.Address" target="_blank">Get Direction</a></li>
+                      <li class="col-md-6"><a class="btn btn-small btn-success" style="font-size:12px;" [href]="'tel:+'+searchData.Telephone_number">Call Now</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="publicList.length==0">
+          <p class="hsptl-data-not-avail">Public not available</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: -webkit-center;">
+      <i (click)="previousFnc(pageNo)" class="material-icons" *ngIf="1!=pageNo" style="cursor: pointer;"> navigate_before</i>
+      <i class="material-icons" *ngIf="1==pageNo" style="color: darkgray;cursor: pointer;"> navigate_before</i>
+      <span style="vertical-align: top;">{{pageNo}} out of {{totalPage}}</span>
+      <i (click)="nextFnc(pageNo)" class="material-icons" *ngIf="totalPage!=pageNo" style="cursor: pointer;"> navigate_next </i>
+      <i class="material-icons" *ngIf="totalPage==pageNo" style="color: darkgray;cursor: pointer;"> navigate_next </i>
+    </div>
+  </div>
+</section>
+<!--blog section-->
+<section id="blog" class="blog-dash">
+  <div class="container">
+    <div class="center-area-dashboard row">
+      <div class="col-xs-12 col-sm-3 col-md-3 center-colomn center-colomn-border">
+        <div class="col-md-12">
+          <h5>How many miles should you run a week?</h5>
+          <p>These seven expert-backed rules for weekly mileage will keep you fit and injury-free.</p>
+          <div>
+            <span class="badge">Posted 2019-12-01 10:00 AM</span>
+            <div class="pull-right"><span class="b-author-by">By </span><span class="b-author-name">ASHLEY MATEO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-3 col-md-3 center-colomn center-colomn-border">
+        <div class="embed-responsive embed-responsive-21by9 video-blog">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/4egM_a_nmKk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-3 col-md-3 center-colomn center-colomn-border">
+        <ul class="list-unstyled quick-links">
+          <li><a href="https://osteopathic.org/what-is-osteopathic-medicine/benefits-of-yoga/" target="_blank">Benefits of Yoga</a></li>
+          <li><a href="https://www.healthline.com/health/balanced-diet" target="_blank">Balanced Diet</a></li>
+        </ul>
+      </div>
+      <div class="col-xs-12 col-sm-3 col-md-3 center-colomn">
+        <ul class="list-unstyled quick-links">
+          <li style="margin:12px;"><a href="https://www.apollomunichinsurance.com/" target="_blank"><img width="50px" src="./assets/images/apollo-munich-logo.png" /></a></li>
+          <li style="margin:12px;"><a href="https://www.licindia.in/" target="_blank"><img width="50px" src="./assets/images/licLogo.png" /></a></li>
+          <li style="margin:12px;"><a href="https://www.pmjay.gov.in/" target="_blank">Ayushman Bharat health insurance</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="about">
+  <div class="container">
+    <div class="text-intro">
+      <h2>About Us</h2>
+      <p>We are a technology-driven platform helping people to search suitable doctor, hospital and health related services.
+        Our serivces cover detailed information of doctors, health schemes and wellness informtion. Our mission is to provide
+        one-click access to individuals to know health facility nearby areas.<br />
+        We are a team of doctors and IT professionals.</p>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

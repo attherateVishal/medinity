@@ -1,0 +1,56 @@
+
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="./assets/images/icons/favicon.ico" />
+
+
+	<div class="container-login100" style="background-image: url('./assets/images/ccardio.jpg');">
+		<div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
+			<a class="navbar-brand" routerLink="/home"><span>Med</span>nity</a>
+			<form class="login100-form validate-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+				<span class="login100-form-title p-b-37">
+					Login
+				</span>
+
+				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username or email">
+					<input class="input100 form-control inputBtn" formControlName="userName" type="text"
+						placeholder="username or email" style="border-radius: 20px;"
+						[ngClass]="{ 'is-invalid': submitted && f.userName.errors }">
+					<span class="focus-input100"></span>
+					<div *ngIf="submitted && f.userName.errors" class="invalid-feedback">
+						<div *ngIf="f.userName.errors.required">Name is required</div>
+						<div *ngIf="f.userName.errors.pattern">Name can only be alphabets</div>
+
+					</div>
+				</div>
+
+				<div class="wrap-input100 validate-input m-b-25" data-validate="Enter password">
+					<input class="input100 form-control inputBtn" type="password" formControlName="password"
+						placeholder="password" style="border-radius: 20px;"
+						[ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+					<span class="focus-input100"></span>
+					<div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+						<div *ngIf="f.password.errors.required">Password is required</div>
+						<div *ngIf="f.password.errors.pattern">Password can only be alphabets and numbers</div>
+
+					</div>
+				</div>
+
+
+				<div class="container-login100-form-btn">
+					<button class="login100-form-btn">
+						Login
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+	<div id="dropDownSelect1"></div>
+
+	<!--===============================================================================================-->
+	<script src="./assets/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="./assets/vendor/bootstrap/js/popper.js"></script>
+	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="./assets/js/main.js"></script>
