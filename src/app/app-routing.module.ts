@@ -5,7 +5,6 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PageNotFoundComponent }from './components/page-not-found/page-not-found.component';
 // import { BlogComponent } from './components/blog/blog.component';
-// import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [{ path: '', redirectTo: 'home', pathMatch: 'full' 
 },{
